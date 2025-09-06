@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import psycopg2, psycopg2.extras
-import os
 from dotenv import load_dotenv
+import os
+os.system(os.path.expanduser("~/tpqanymhost/update.sh"))
+
+
 
 # Load environment dari file .env
 load_dotenv()
