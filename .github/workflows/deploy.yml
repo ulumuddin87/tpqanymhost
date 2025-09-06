@@ -1,0 +1,29 @@
+name: 🚀 Deploy to AnyMHost
+
+on:
+  push:
+    branches:
+      - main   # ganti kalau branch utama bukan 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.ANYMHOST_SSH_KEY }}
+
+      - name: Deploy to AnyMHost
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.ANYMHOST_USER }}@${{ secrets.ANYMHOST_HOST }} << 'EOF'
+            cd ~/tpqanymhost || exit
+            git reset --hard
+            git pull origin main
+            source ~/virtualenv/tpqanymhost/3.10/bin/activate
+            pip install -r requirements.txt
+            touch ~/tpqanymhost/tmp/restart.txt
+          EOF
