@@ -1,0 +1,13 @@
+deployment:
+  tasks:
+    # Path root aplikasi (ganti USERNAME dan tpq sesuai app kamu di cPanel)
+    - export DEPLOYPATH=/home/USERNAME/tpq
+
+    # Copy semua file dari repo ke folder app
+    - /bin/cp -r * $DEPLOYPATH
+
+    # Install/update dependensi di virtualenv Python
+    - /home/USERNAME/virtualenv/tpq/3.11/bin/pip install -r $DEPLOYPATH/requirements.txt
+
+    # Restart aplikasi Flask di cPanel
+    - touch $DEPLOYPATH/tmp/restart.txt
